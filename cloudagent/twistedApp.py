@@ -2,6 +2,10 @@ from twisted.application import service
 from twisted.application.internet import TimerService
 
 import time
+try:
+	import simplejson as json
+except ImportError:
+	import json
 
 class MetricService(TimerService):
 	def __init__( self, metricProvider ):
