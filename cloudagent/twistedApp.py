@@ -21,6 +21,9 @@ class SpoolJournal(object):
 		self._currentPath = os.path.join( path, 'current' )
 		self._completePath = os.path.join( path, 'complete' )
 		
+		if not os.path.exists( self._completePath ):
+			os.makedirs( self._completePath )
+		
 		self._file = None
 		self._doRotate( )
 	
