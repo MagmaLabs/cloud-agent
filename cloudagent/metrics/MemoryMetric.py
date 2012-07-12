@@ -1,11 +1,16 @@
 from cloudagent.Metric import Metric
 
+import os.path
+
 class MemoryMetric(Metric):
 	def __init__( self ):
 		pass
 	
 	def getInterval( self ):
 		return (5*60)
+	
+	def supported( self ):
+		return os.path.exists( '/proc/meminfo' )
 	
 	def getMetrics( self ):
 		memoryData = open('/proc/meminfo').read()

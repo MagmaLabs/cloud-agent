@@ -1,6 +1,10 @@
 from twisted.application import service
 from twisted.application.internet import TimerService
 
+from cloudagent.util.importTools import importAllSubclassing
+
+from cloudagent.Metric import Metric
+
 import time
 try:
 	import simplejson as json
@@ -22,18 +26,13 @@ class MetricService(TimerService):
 application = service.Application( 'cloudagent' )
 
 # find the metrics
-modules = [
-	'Memory',
-	'Network'
-]
-
 def _getMetricProviders( ):
-	for module in modules:
-		className = module + 'Metric'
-		metricModule = __import__( 'metrics.' + className, globals(), locals(), [className] )
-		metricClass = getattr( metricModule, className )
+	for metricClass in importAllSubclassing( 'cloudagent.metrics', Metric ):
 		metricInst = metricClass( )
-		yield metricInst
+		if metricInst.supported( ):
+			yield metricInst
+		else:
+			print 'Ignoring', metricClass.__name__, '(not supported on this system)'
 
 # add the metric providers to the application as services
 for metricProvider in _getMetricProviders( ):
