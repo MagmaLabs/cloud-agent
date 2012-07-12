@@ -5,21 +5,25 @@ except ImportError:
 
 import time
 
-data = {}
-data['time'] = time.time()
-
 modules = [
 	'Memory',
 	'Network'
 ]
 
-for module in modules:
-	className = module + 'Metric'
-	metricModule = __import__( 'metrics.' + className, globals(), locals(), [className] )
-	metricClass = getattr( metricModule, className )
-	metricInst = metricClass( )
+def _getMetricProviders( ):
+	for module in modules:
+		className = module + 'Metric'
+		metricModule = __import__( 'metrics.' + className, globals(), locals(), [className] )
+		metricClass = getattr( metricModule, className )
+		metricInst = metricClass( )
+		yield metricInst
+
+metricProvider = list( _getMetricProviders( ) )
+
+for metricInst in metricProvider:
 	metrics = metricInst.getMetrics()
 	if metrics is not None:
-		data.update( metrics['data'] )
-
-print json.dumps( data )
+		data = metrics
+		if 'time' not in data:
+			data['time'] = time.time()
+		print json.dumps( data )
