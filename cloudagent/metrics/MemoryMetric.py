@@ -1,4 +1,4 @@
-from ..Metric import Metric
+from cloudagent.Metric import Metric
 
 class MemoryMetric(Metric):
 	def __init__( self ):
