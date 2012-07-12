@@ -1,6 +1,8 @@
 from twisted.application import service
 from twisted.application.internet import TimerService
 
+import time
+
 class MetricService(TimerService):
 	def __init__( self, metricProvider ):
 		TimerService.__init__( self, metricProvider.getInterval( ), self.processMetrics )
