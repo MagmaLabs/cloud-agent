@@ -13,7 +13,7 @@ except ImportError:
 	import json
 
 class JournalFile(object):
-	MAX_RECORDS_PER_FILE = 2
+	MAX_RECORDS_PER_FILE = 1000
 	
 	def __init__( self, filePrefix ):
 		self._filePrefix = filePrefix
