@@ -3,7 +3,7 @@ from twisted.application.internet import TimerService
 
 class MetricService(TimerService):
 	def __init__( self, metricProvider ):
-		super(MetricService, self).__init__( metricProvider.getInterval( ), self.processMetrics )
+		TimerService.__init__( self, metricProvider.getInterval( ), self.processMetrics )
 		self.metricProvider = metricProvider
 	
 	def processMetrics( self ):
