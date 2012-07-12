@@ -1,2 +1,3 @@
 class Metric(object):
-	pass
+	def supported( self ):
+		return True
