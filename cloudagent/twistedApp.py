@@ -12,11 +12,14 @@ try:
 except ImportError:
 	import json
 
-class JournalFile(object):
+class SpoolJournal(object):
 	MAX_RECORDS_PER_FILE = 1000
 	
-	def __init__( self, filePrefix ):
-		self._filePrefix = filePrefix
+	def __init__( self, path ):
+		self._filePath = path
+		
+		self._currentPath = os.path.join( path, 'current' )
+		self._completePath = os.path.join( path, 'complete' )
 		
 		self._file = None
 		self._doRotate( )
@@ -39,16 +42,19 @@ class JournalFile(object):
 			self._file = None
 		
 		# clean up existing journal file
-		if os.path.exists( self._filePrefix ):
-			newFile = self._filePrefix + '-' + str(time.time())
-			os.rename( self._filePrefix, newFile )
+		if os.path.exists( self._currentPath ):
+			newFile = os.path.join( self._completePath, 'blob-' + str(time.time()) )
+			os.rename( self._currentPath, newFile )
 		
 		self._currentWriteCount = 0
-		self._file = open( self._filePrefix, 'wa' )
+		self._file = open( self._currentPath, 'wa' )
 
-if not os.path.exists( 'log' ):
-	os.makedirs( 'log' )
-metricJournals = JournalFile( 'log/metrics' )
+SPOOL_DIR = 'spool'
+METRICS_SPOOL_DIR = os.path.join( SPOOL_DIR, 'metrics' )
+
+if not os.path.exists( METRICS_SPOOL_DIR ):
+	os.makedirs( METRICS_SPOOL_DIR )
+metricJournals = SpoolJournal( METRICS_SPOOL_DIR )
 
 class MetricService(TimerService):
 	def __init__( self, metricProvider ):
