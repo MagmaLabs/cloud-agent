@@ -24,6 +24,8 @@ class JournalFile(object):
 	def writeData( self, data ):
 		self._maybeRotate( )
 		self._file.write( json.dumps( data ) )
+		self._file.write( '\n' )
+		self._file.flush( )
 		self._currentWriteCount += 1
 	
 	def _maybeRotate( self ):
