@@ -15,7 +15,7 @@ class DiskMetric(Metric):
 	
 	def getMetrics( self ):
 		mtab = [l.split( ' ' ) for l in open('/etc/mtab').read( ).strip( ).split( '\n' )]
-		disks = []
+		disks = {}
 		for ent in mtab:
 			# mtab uses '\0xx' (octal) for whitespace chars and '\\' for '\'
 			path = re.sub('\\\\(\\\\|0[0-9]{2})', lambda x: chr(int(x.group( 1 ), 8)) if x.group( 1 )[0]=='0' else x.group( 1 ), ent[1])
@@ -23,13 +23,12 @@ class DiskMetric(Metric):
 			stats = os.statvfs( path )
 			# only show mounted things which have blocks and map to devices on the file-system
 			if stats.f_blocks and device.startswith( '/' ):
-				disks.append( {
-					'mountPoint': path,
+				disks[path] = {
 					'device': device,
 					'available': stats.f_bavail* stats.f_bsize,
 					'used': (stats.f_blocks - stats.f_bfree) * stats.f_bsize,
 					'total': stats.f_blocks * stats.f_bsize,
-				} )
+				}
 
 		return {
 			'type': 'disk',
