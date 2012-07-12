@@ -36,8 +36,13 @@ class JournalFile(object):
 			self._file.close( )
 			self._file = None
 		
+		# clean up existing journal file
+		if os.path.exists( self._filePrefix ):
+			newFile = self._filePrefix + '-' + str(time.time())
+			os.rename( self._filePrefix, newFile )
+		
 		self._currentWriteCount = 0
-		self._file = open( self._filePrefix + '-' + str(time.time()), 'wa' )
+		self._file = open( self._filePrefix, 'wa' )
 
 if not os.path.exists( 'log' ):
 	os.makedirs( 'log' )
