@@ -7,10 +7,19 @@ from cloudagent.Metric import Metric
 
 import time
 import os
+import sys
 try:
 	import simplejson as json
 except ImportError:
 	import json
+
+try:
+	import agent_settings
+except ImportError:
+	print 'You need to create an "agent_settings.py" file.'
+	sys.exit( 1 )
+
+print 'push:', agent_settings.PUSH_DETAILS
 
 class SpoolJournal(object):
 	MAX_RECORDS_PER_FILE = 1000

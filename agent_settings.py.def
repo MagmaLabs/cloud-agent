@@ -1,0 +1,4 @@
+PUSH_DETAILS = {
+        'url': '',
+        'secret': '',
+}
