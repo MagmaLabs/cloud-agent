@@ -3,6 +3,8 @@ from twisted.internet import defer
 from twisted.web import client
 from twisted.web.http_headers import Headers
 
+from cloudagent.twistedExtensions.MultiPartProducer import MultiPartProducer
+
 import agent_settings
 
 def finished(bytes):
