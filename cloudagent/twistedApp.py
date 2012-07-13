@@ -20,8 +20,6 @@ except ImportError:
 	print 'You need to create an "agent_settings.py" file.'
 	sys.exit( 1 )
 
-print 'push:', agent_settings.PUSH_DETAILS
-
 application = service.Application( 'cloudagent' )
 
 # find the metrics
@@ -37,3 +35,5 @@ def _getMetricProviders( ):
 for metricProvider in _getMetricProviders( ):
 	metricService = MetricService( metricProvider )
 	metricService.setServiceParent( application )
+
+# add a service to check for files spooled and ready to push
