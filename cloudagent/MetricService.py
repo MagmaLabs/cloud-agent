@@ -4,6 +4,7 @@ from cloudagent.SpoolJournal import SpoolJournal
 
 import time
 import os
+import bson
 
 SPOOL_DIR = 'spool'
 METRICS_SPOOL_DIR = os.path.join( SPOOL_DIR, 'metrics' )
@@ -22,4 +23,5 @@ class MetricService(TimerService):
 		if metrics is not None:
 			if 'time' not in metrics:
 				metrics['time'] = time.time()
+				metrics['unique_id'] = str( bson.objectid.ObjectId( ) )
 			metricJournals.writeData( metrics )

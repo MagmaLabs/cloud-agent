@@ -5,6 +5,7 @@ from cloudagent.util.importTools import importAllSubclassing
 
 from cloudagent.Metric import Metric
 from cloudagent.MetricService import MetricService
+from cloudagent.PushService import PushService
 
 import time
 import os
@@ -37,3 +38,5 @@ for metricProvider in _getMetricProviders( ):
 	metricService.setServiceParent( application )
 
 # add a service to check for files spooled and ready to push
+pushService = PushService( )
+pushService.setServiceParent( application )
