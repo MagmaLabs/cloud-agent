@@ -2,6 +2,7 @@ from twisted.application.internet import TimerService
 
 from cloudagent.SpoolJournal import SpoolJournal
 
+import time
 import os
 
 SPOOL_DIR = 'spool'
