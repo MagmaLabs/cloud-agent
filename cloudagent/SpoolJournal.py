@@ -22,11 +22,11 @@ class SpoolJournal(object):
 		self._doRotate( )
 	
 	def writeData( self, data ):
-		self._maybeRotate( )
 		self._file.write( json.dumps( data ) )
 		self._file.write( '\n' )
 		self._file.flush( )
 		self._currentWriteCount += 1
+		self._maybeRotate( )
 	
 	def _maybeRotate( self ):
 		if self._currentWriteCount >= self.MAX_RECORDS_PER_FILE or self._firstWrite + self.MAX_SECONDS_PER_FILE < time.time():
