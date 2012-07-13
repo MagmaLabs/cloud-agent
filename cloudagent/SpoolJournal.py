@@ -29,7 +29,7 @@ class SpoolJournal(object):
 		self._currentWriteCount += 1
 	
 	def _maybeRotate( self ):
-		if self._currentWriteCount >= self.MAX_RECORDS_PER_FILE or self._firstWrite + self.MAX_SECONDS_PER_FILE > time.time():
+		if self._currentWriteCount >= self.MAX_RECORDS_PER_FILE or self._firstWrite + self.MAX_SECONDS_PER_FILE < time.time():
 			self._doRotate( )
 	
 	def _doRotate( self ):
