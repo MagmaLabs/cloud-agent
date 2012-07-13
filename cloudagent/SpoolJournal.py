@@ -7,6 +7,7 @@ except ImportError:
 
 class SpoolJournal(object):
 	MAX_RECORDS_PER_FILE = 1000
+	MAX_SECONDS_PER_FILE = (5*60)
 	
 	def __init__( self, path ):
 		self._filePath = path
@@ -28,7 +29,7 @@ class SpoolJournal(object):
 		self._currentWriteCount += 1
 	
 	def _maybeRotate( self ):
-		if self._currentWriteCount >= self.MAX_RECORDS_PER_FILE:
+		if self._currentWriteCount >= self.MAX_RECORDS_PER_FILE or self._firstWrite + self.MAX_SECONDS_PER_FILE > time.time():
 			self._doRotate( )
 	
 	def _doRotate( self ):
@@ -43,4 +44,5 @@ class SpoolJournal(object):
 			os.rename( self._currentPath, newFile )
 		
 		self._currentWriteCount = 0
+		self._firstWrite = time.time( )
 		self._file = open( self._currentPath, 'wa' )
